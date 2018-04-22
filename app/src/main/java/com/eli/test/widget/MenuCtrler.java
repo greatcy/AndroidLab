@@ -1,32 +1,36 @@
-package com.eli.test;
+package com.eli.test.widget;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import com.eli.test.R;
+
 /**
- * Created by eli on 18-4-21.
+ * Created by eli on 18-4-22.
  */
 
-public class TestAnimActivity extends AppCompatActivity {
-    private final String TAG = TestAnimActivity.class.getSimpleName();
+public class MenuCtrler {
     private ImageView ivAddMenu, ivPlayStop, ivExit, ivHome;
     private boolean mIsMenuOpened;
+    private ViewGroup mRoot;
+    private Context mContext;
+    private static final int ANIM_DURATION = 150;
+    private boolean isPlaying;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.float_view);
+    public MenuCtrler(Context context, @NonNull ViewGroup root) {
+        this.mRoot = root;
+        this.mContext = context;
 
-        ivAddMenu = findViewById(R.id.iv_add);
+        ivAddMenu = mRoot.findViewById(R.id.iv_add);
 
-        ivHome = findViewById(R.id.iv_home);
-        ivExit = findViewById(R.id.iv_exit);
-        ivPlayStop = findViewById(R.id.iv_play_stop);
+        ivHome = mRoot.findViewById(R.id.iv_home);
+        ivExit = mRoot.findViewById(R.id.iv_exit);
+        ivPlayStop = mRoot.findViewById(R.id.iv_play_stop);
 
         ivAddMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +46,7 @@ public class TestAnimActivity extends AppCompatActivity {
     }
 
     private void showMenu() {
-        ivAddMenu.setImageDrawable(getResources().
+        ivAddMenu.setImageDrawable(mContext.getResources().
                 getDrawable(R.drawable.cancel_bg_selector));
         playToShow(ivHome, ivAddMenu.getX() - ivHome.getX(), 0,
                 ivAddMenu.getY() - ivHome.getY(), 0);
@@ -53,7 +57,7 @@ public class TestAnimActivity extends AppCompatActivity {
     }
 
     private void closeMenu() {
-        ivAddMenu.setImageDrawable(getResources().
+        ivAddMenu.setImageDrawable(mContext.getResources().
                 getDrawable(R.drawable.add_bg_selector));
         playToHide(ivHome, 0, ivAddMenu.getX() - ivHome.getX(),
                 0, ivAddMenu.getY() - ivHome.getY());
@@ -66,7 +70,7 @@ public class TestAnimActivity extends AppCompatActivity {
     private void playToShow(final View view, float sx, float tx,
                             float sy, float ty) {
         TranslateAnimation translateAnimation = new TranslateAnimation(sx, tx, sy, ty);
-        translateAnimation.setDuration(200);
+        translateAnimation.setDuration(ANIM_DURATION);
         translateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -89,7 +93,7 @@ public class TestAnimActivity extends AppCompatActivity {
     private void playToHide(final View view, float sx, float tx,
                             float sy, float ty) {
         TranslateAnimation translateAnimation = new TranslateAnimation(sx, tx, sy, ty);
-        translateAnimation.setDuration(300);
+        translateAnimation.setDuration(ANIM_DURATION);
         translateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -107,5 +111,28 @@ public class TestAnimActivity extends AppCompatActivity {
             }
         });
         view.startAnimation(translateAnimation);
+    }
+
+    public void setMenuClickListener(@NonNull final View.OnClickListener listener) {
+        this.ivHome.setOnClickListener(listener);
+        this.ivPlayStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(view);
+                isPlaying = !isPlaying;
+                ivPlayStop.setImageDrawable(isPlaying ?
+                        mContext.getResources().getDrawable(R.drawable.stop_bg_selector) :
+                        mContext.getResources().getDrawable(R.drawable.play_bg_selector));
+            }
+        });
+        this.ivExit.setOnClickListener(listener);
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public ImageView getIvAddMenu() {
+        return ivAddMenu;
     }
 }

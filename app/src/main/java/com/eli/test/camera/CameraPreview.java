@@ -17,7 +17,6 @@ public class CameraPreview extends TextureView implements
     public CameraPreview(Context context , Camera camera) {
         super(context);
         mCamera = camera;
-        // TODO Auto-generated constructor stub
     }
 
 

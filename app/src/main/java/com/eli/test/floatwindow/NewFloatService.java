@@ -1,16 +1,11 @@
 package com.eli.test.floatwindow;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,21 +15,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.eli.test.HomeActivity;
 import com.eli.test.R;
 import com.eli.test.Utils;
 import com.eli.test.camera.CameraPreview;
 import com.eli.test.camera.VideoManager;
+import com.eli.test.widget.MenuCtrler;
 
 /**
  * Created by chenjunheng on 2018/4/19.
  */
 
-public class NewFloatService extends Service {
+public class NewFloatService extends Service implements View.OnClickListener {
     //Log用的TAG
     private static final String TAG = "NewMainService";
 
@@ -45,15 +39,12 @@ public class NewFloatService extends Service {
     //实例化的WindowManager.
     private WindowManager windowManager;
 
-    private ImageView ivAddMenu, ivPlayStop, ivExit, ivHome;
-
     private Camera mCamera;
     private CameraPreview mPreview;
 
     private int mScreenWidth;
 
-    private boolean mIsMenuOpened;
-    private boolean mIsRightMode;//left or right
+    private MenuCtrler menuCtrler;
 
     private VideoManager videoManager;
 
@@ -92,8 +83,8 @@ public class NewFloatService extends Service {
         //注意，这里的width和height均使用px而非dp.这里我偷了个懒
         //如果你想完全对应布局设置，需要先获取到机器的dpi
         //px与dp的换算为px = dp * (dpi / 160).
-        params.width = Utils.dip2px(this,300);
-        params.height = Utils.dip2px(this,300);
+        params.width = Utils.dip2px(this, 300);
+        params.height = Utils.dip2px(this, 300);
 
         LayoutInflater inflater = LayoutInflater.from(getApplication());
         //获取浮动窗口视图所在布局.
@@ -116,121 +107,33 @@ public class NewFloatService extends Service {
         }
         Log.i(TAG, "状态栏高度为:" + statusBarHeight);
 
-        //浮动窗口按钮.
-        ivAddMenu = toucherLayout.findViewById(R.id.iv_add);
+        menuCtrler = new MenuCtrler(this, toucherLayout);
 
-        ivHome = toucherLayout.findViewById(R.id.iv_home);
-        ivExit = toucherLayout.findViewById(R.id.iv_exit);
-        ivPlayStop = toucherLayout.findViewById(R.id.iv_play_stop);
+        initRecorder();
 
-        ivAddMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "点击了");
-                mIsMenuOpened = !mIsMenuOpened;
-                if (mIsMenuOpened) {
-                    showMenu();
-                } else {
-                    closeMenu();
-                }
-            }
-        });
-
-        ivAddMenu.setOnTouchListener(new View.OnTouchListener() {
+        menuCtrler.getIvAddMenu().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //这就是状态栏偏移量用的地方
                 params.x = (int) event.getRawX() - toucherLayout.getWidth() / 2;
                 params.y = (int) event.getRawY() - toucherLayout.getHeight() / 2 - statusBarHeight;
-
-                mIsRightMode = params.x >= mScreenWidth / 2;
-
                 windowManager.updateViewLayout(toucherLayout, params);
                 return false;
             }
         });
+
+        menuCtrler.setMenuClickListener(this);
     }
 
-    private void showMenu() {
-        ivAddMenu.setImageDrawable(getResources().
-                getDrawable(R.drawable.cancel_bg_selector));
-        playToShow(ivHome);
-        playToShow(ivExit);
-        playToShow(ivPlayStop);
-        initExitPos();
-        playToShow(ivExit);
-    }
-
-    private void closeMenu() {
-        ivAddMenu.setImageDrawable(getResources().
-                getDrawable(R.drawable.add_bg_selector));
-        playToHide(ivHome);
-        playToHide(ivExit);
-        playToHide(ivPlayStop);
-        playToHide(ivExit);
-    }
-
-    private void initExitPos() {
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivExit.getLayoutParams();
-        if (mIsRightMode) {
-            params.setMargins(0, 0,
-                    Utils.dip2px(this, 20), 0);
-            params.gravity = Gravity.END;
-        } else {
-            params.setMargins(Utils.dip2px(this, 20), 0,
-                    0, 0);
-            params.gravity = Gravity.START;
-        }
-        ivExit.setLayoutParams(params);
-    }
-
-    private void playToShow(final View view) {
-        AnimatorSet animatorSet = getAnimSet(view, ivAddMenu.getTranslationX(), 0,
-                ivAddMenu.getTranslationY(), 0);  //组合动画
-        animatorSet.start(); //启动
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                view.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    private void playToHide(final View view) {
-        AnimatorSet animatorSet = getAnimSet(view, 0, ivAddMenu.getTranslationX(),
-                0, ivAddMenu.getTranslationY());  //组合动画
-        animatorSet.start(); //启动
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation, boolean isReverse) {
-                view.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-
-    private AnimatorSet getAnimSet(View view, float sx, float tx, float sy, float ty) {
-        ObjectAnimator translationX = ObjectAnimator.ofFloat(view,
-                "translationX", sx, tx);
-        ObjectAnimator translationY = ObjectAnimator.ofFloat(view,
-                "translationY", sy, ty);
-
-        AnimatorSet animatorSet = new AnimatorSet();  //组合动画
-        animatorSet.playTogether(translationX, translationY); //设置动画
-        animatorSet.setDuration(1000);  //设置动画时间
-
-        return animatorSet;
-    }
-
-    private void startRecordVid() {
+    private void initRecorder() {
         // 创建Camera实例
         mCamera = getCameraInstance();
         // 创建Preview view并将其设为activity中的内容
         mPreview = new CameraPreview(NewFloatService.this, mCamera);
         mPreview.setSurfaceTextureListener(mPreview);
         //设置浑浊
-        mPreview.setAlpha(0.5f);
-        // preview.setAlpha(0.0f);
+//        mPreview.setAlpha(0.5f);
+        mPreview.setAlpha(0.0f);
         toucherLayout.addView(mPreview);
         videoManager = new VideoManager(mPreview);
     }
@@ -259,5 +162,28 @@ public class NewFloatService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_exit:
+                stopSelf();
+                break;
+            case R.id.iv_home:
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
+            case R.id.iv_play_stop:
+                if (!menuCtrler.isPlaying()) {
+                    videoManager.startRecording();
+                    Toast.makeText(this, "start recording...", Toast.LENGTH_LONG).show();
+                } else {
+                    videoManager.stopRecording();
+                    Toast.makeText(this, "done!", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
     }
 }

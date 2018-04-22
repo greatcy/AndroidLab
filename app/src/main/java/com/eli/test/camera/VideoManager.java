@@ -6,6 +6,8 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
 
+import com.eli.test.Configuration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -14,7 +16,7 @@ import java.util.Calendar;
  * Created by chenjunheng on 2018/4/20.
  */
 
-public class VideoManager {
+public class VideoManager implements MediaRecorder.OnErrorListener {
     private static final String TAG = VideoManager.class.getSimpleName();
     private CameraPreview mPreview;
     private Camera mCamera;
@@ -49,10 +51,10 @@ public class VideoManager {
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P));
-        String path = getSDPath();
+        mMediaRecorder.setOnErrorListener(this);
+        String path = Configuration.getInstance(this.mPreview.getContext()).getStoreFolder();
         if (path != null) {
-
-            File dir = new File(path + "/VideoRecorderALab");
+            File dir = new File(path);
             if (!dir.exists()) {
                 dir.mkdir();
             }
@@ -95,18 +97,8 @@ public class VideoManager {
         return date;
     }
 
-    /**
-     * 获取SD path
-     */
-    public String getSDPath() {
-        File sdDir;
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED); // 判断sd卡是否存在
-        if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();// 获取外部存储的根目录
-            return sdDir.toString();
-        }
-
-        return null;
+    @Override
+    public void onError(MediaRecorder mediaRecorder, int i, int i1) {
+        Log.d(TAG, "record video error i:" + i + " i1:" + i1);
     }
 }
