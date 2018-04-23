@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BStyleVidRecorder</string>
+    <string name="app_name">VidRecorder</string>
 
     <string name="action_setting">设置</string>
     <string name="action_about">关于</string>
