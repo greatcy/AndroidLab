@@ -27,24 +27,27 @@
 
         </activity>
 
-        <activity android:name=".ShowPhotoActivity"></activity>
+        <activity android:name=".ShowPhotoActivity" />
 
         <activity android:name=".SimplestActivity">
 
         </activity>
 
         <activity android:name=".floatwindow.FloatActivity">
-        </activity>
-
-        <service android:name=".floatwindow.FloatService" />
-        <service android:name=".floatwindow.NewFloatService" />
-
-        <activity android:name=".TestAnimActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <service android:name=".floatwindow.FloatService" />
+        <service android:name=".floatwindow.NewFloatService" />
+
+        <service android:name=".floatwindow.AnimFloatService" />
+
+        <activity android:name=".TestAnimActivity">
+
         </activity>
 
         <activity android:name=".HomeActivity" />

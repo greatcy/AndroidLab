@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="@android:color/darker_gray"
+    android:layout_height="300dp">
+
+    <ImageView
+        android:id="@+id/iv_ctr"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal|center"
+        android:background="@drawable/black_bg_selector"
+        android:padding="6dp"
+        android:src="@drawable/home" />
+
+
+</FrameLayout>
