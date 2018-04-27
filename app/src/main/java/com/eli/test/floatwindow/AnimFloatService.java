@@ -95,10 +95,12 @@ public class AnimFloatService extends NewFloatService {
         mMenuBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //这就是状态栏偏移量用的地方
-                params.x = (int) event.getRawX() - toucherLayout.getWidth() / 2;
-                params.y = (int) event.getRawY() - toucherLayout.getHeight() / 2 - statusBarHeight;
-                windowManager.updateViewLayout(toucherLayout, params);
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    //这就是状态栏偏移量用的地方
+                    params.x = (int) event.getRawX() - toucherLayout.getWidth() / 2;
+                    params.y = (int) event.getRawY() - toucherLayout.getHeight() / 2 - statusBarHeight;
+                    windowManager.updateViewLayout(toucherLayout, params);
+                }
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     AnimatorSet as = new AnimatorSet();
@@ -129,7 +131,8 @@ public class AnimFloatService extends NewFloatService {
                     }
                     as.start();
                 }
-                return false;
+
+                return true;
             }
         });
 
@@ -142,6 +145,8 @@ public class AnimFloatService extends NewFloatService {
         //设置窗口初始停靠位置.
         params.x = mScreenWidth / 2 - Utils.dip2px(this, 60) / 2;
         params.y = mScreenHeight / 2 - Utils.dip2px(this, 60) / 2 - statusBarHeight;
+
+
         point.x = mScreenWidth / 2 - Utils.dip2px(this, 60) / 2;
         point.y = mScreenHeight / 2 - Utils.dip2px(this, 60) / 2 - statusBarHeight;
 
@@ -169,7 +174,62 @@ public class AnimFloatService extends NewFloatService {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_ctr:
+                LayoutInflater inflater = LayoutInflater.from(getApplication());
+                View item = inflater.inflate(R.layout.anim_float_view, null);
+                WindowManager.LayoutParams p = genLayoutParam(params.x,
+                        params.y);
+                updateListener listener = new updateListener(0, item);
+                ValueAnimator animator = ValueAnimator.ofFloat(p.x, p.x - 200);
+                animator.setInterpolator(new AccelerateInterpolator());
+                animator.setDuration(1000);
+                animator.addUpdateListener(listener);
+//                animator.start();
+                windowManager.addView(item, p);
                 break;
+        }
+    }
+
+    private WindowManager.LayoutParams genLayoutParam(int x, int y) {
+        //赋值WindowManager&LayoutParam.
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+        //设置type.系统提示型窗口，一般都在应用程序窗口之上.
+        params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        //设置效果为背景透明.
+        params.format = PixelFormat.RGBA_8888;
+        //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+
+        params.gravity = Gravity.START | Gravity.TOP;
+
+        params.x = x;
+        params.y = y;
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        return params;
+    }
+
+    private class updateListener implements ValueAnimator.AnimatorUpdateListener {
+        private View mTarget;
+        private int type;//0--x,1--y
+
+        public updateListener(int type, View mTarget) {
+            this.mTarget = mTarget;
+            this.type = type;
+        }
+
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            float cur = (float) animation.getAnimatedValue();
+            switch (type) {
+                case 0:
+                    params.x = (int) cur;
+                    break;
+                case 1:
+                    params.y = (int) cur;
+                    break;
+            }
+            windowManager.updateViewLayout(mTarget, params);
         }
     }
 }
