@@ -1,5 +1,7 @@
 package com.eli.test.floatwindow;
 
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -12,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationSet;
 import android.widget.FrameLayout;
 
 import com.eli.test.R;
@@ -24,6 +27,9 @@ import com.eli.test.Utils;
 public class AnimFloatService extends NewFloatService {
     private View mMenuBtn;
     private Point point = new Point();
+
+    private int minLine;
+    private int maxLine;
 
     private ValueAnimator.AnimatorUpdateListener updateXListener =
             new ValueAnimator.AnimatorUpdateListener() {
@@ -95,6 +101,7 @@ public class AnimFloatService extends NewFloatService {
                 windowManager.updateViewLayout(toucherLayout, params);
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+                    AnimatorSet as = new AnimatorSet();
                     ValueAnimator va;
                     if (event.getRawX() < point.x) {
                         va = ValueAnimator.ofFloat(event.getRawX(), 0);
@@ -102,25 +109,25 @@ public class AnimFloatService extends NewFloatService {
                         va = ValueAnimator.ofFloat(event.getRawX(),
                                 mScreenWidth - toucherLayout.getWidth());
                     }
-                    va.addUpdateListener(updateXListener);
                     va.setDuration(100);
                     va.setInterpolator(new AccelerateInterpolator());
-                    va.start();
+                    va.addUpdateListener(updateXListener);
 
-//                    int heightMin = Utils.dip2px(AnimFloatService.this,
-//                            150 + statusBarHeight);
-//                    int heightMax=mScreenHeight-Utils.dip2px(AnimFloatService.this,
-//                            150)-Utils.dip2px(AnimFloatService.this, 60);
-//                    if (event.getRawY() < heightMin) {
-//                        va = ValueAnimator.ofFloat(event.getRawY(), heightMin);
-//                    }
-//                    else if (event.getRawY() > heightMax){
-//                        va = ValueAnimator.ofFloat(event.getRawY(), heightMax);
-//                    }
-//                    va.addUpdateListener(updateYListener);
-//                    va.setDuration(100);
-//                    va.setInterpolator(new AccelerateInterpolator());
-//                    va.start();
+                    ValueAnimator vaY = null;
+                    if (event.getRawY() < minLine) {
+                        vaY = ValueAnimator.ofFloat(event.getRawY(), minLine);
+                    } else if (event.getRawY() > maxLine) {
+                        vaY = ValueAnimator.ofFloat(event.getRawY(), maxLine);
+                    }
+                    if (vaY != null) {
+                        vaY.setDuration(100);
+                        vaY.setInterpolator(new AccelerateInterpolator());
+                        vaY.addUpdateListener(updateYListener);
+                        as.playTogether(vaY, va);
+                    } else {
+                        as.play(va);
+                    }
+                    as.start();
                 }
                 return false;
             }
@@ -137,8 +144,25 @@ public class AnimFloatService extends NewFloatService {
         params.y = mScreenHeight / 2 - Utils.dip2px(this, 60) / 2 - statusBarHeight;
         point.x = mScreenWidth / 2 - Utils.dip2px(this, 60) / 2;
         point.y = mScreenHeight / 2 - Utils.dip2px(this, 60) / 2 - statusBarHeight;
+
         //添加toucherlayout
         windowManager.addView(toucherLayout, params);
+
+        //add height line
+        minLine = Utils.dip2px(this, 100) + statusBarHeight;
+        maxLine = mScreenHeight - Utils.dip2px(this, 160);
+        View minLineView = inflater.inflate(R.layout.red_line_view, null);
+        View maxLineView = inflater.inflate(R.layout.red_line_view, null);
+
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = 1;
+        params.y = minLine;
+        windowManager.addView(minLineView, params);
+        params.y = maxLine;
+        windowManager.addView(maxLineView, params);
+
+        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
     }
 
     @Override

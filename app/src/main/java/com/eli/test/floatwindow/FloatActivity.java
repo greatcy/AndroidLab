@@ -47,7 +47,7 @@ public class FloatActivity extends AppCompatActivity {
                     Intent intent = new Intent(FloatActivity.this, AnimFloatService.class);
                     Toast.makeText(FloatActivity.this, "已开启", Toast.LENGTH_SHORT).show();
                     startService(intent);
-                    finish();
+//                    finish();
                 } else {
                     //若没有权限，提示获取.
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
@@ -58,7 +58,7 @@ public class FloatActivity extends AppCompatActivity {
                 //SDK在23以下，不用管.
                 Intent intent = new Intent(FloatActivity.this, AnimFloatService.class);
                 startService(intent);
-                finish();
+//                finish();
             }
         }
     };

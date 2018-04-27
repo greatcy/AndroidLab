@@ -7,9 +7,9 @@
         android:id="@+id/iv_ctr"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_gravity="center_horizontal|center"
+        android:layout_gravity="center"
         android:background="@drawable/black_bg_selector"
-        android:padding="6dp"
+        android:padding="5dp"
         android:src="@drawable/ic_circle" />
 
 
