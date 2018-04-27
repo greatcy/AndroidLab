@@ -1,6 +1,8 @@
 package com.eli.test;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +48,37 @@ public class PreviewAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Holder holder;
-        VideoBean videoBean = getItem(i);
+        final VideoBean videoBean = getItem(i);
         if (view == null) {
             view = LayoutInflater.from(this.mContext).
                     inflate(R.layout.video_item_layout, viewGroup, false);
             holder = new Holder();
+            holder.ivPoster = view.findViewById(R.id.iv_poster);
+            holder.tvDuration = view.findViewById(R.id.tv_duration);
+            holder.tvFileName = view.findViewById(R.id.tv_title);
+            holder.tvSize = view.findViewById(R.id.tv_size);
             view.setTag(holder);
+        } else {
+            holder = (Holder) view.getTag();
+        }
+
+        if (holder != null) {
+            holder.ivPoster.setImageBitmap
+                    (VidImageLoader.getInstance().getBitmap(videoBean.getPath()));
+
+            holder.ivPoster.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse("file://" + videoBean.getPath());
+                    Intent intent = new Intent();
+                    intent.setDataAndType(uri, "video/mp4");
+                    mContext.startActivity(intent);
+                }
+            });
+
+            holder.tvSize.setText(videoBean.getSize());
+            holder.tvDuration.setText(videoBean.getDuration());
+            holder.tvFileName.setText(videoBean.getFileName());
         }
 
         return view;
@@ -61,4 +88,6 @@ public class PreviewAdapter extends BaseAdapter {
         ImageView ivPoster;
         TextView tvFileName, tvSize, tvDuration;
     }
+
+
 }

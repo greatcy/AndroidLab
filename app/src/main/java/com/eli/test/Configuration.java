@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 
+import java.io.File;
+
 /**
  * Created by eli on 18-4-22.
  */
@@ -44,7 +46,7 @@ public class Configuration {
                 getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
 
         mStoreFolder = sharedPreferences.getString(SP_KEY_STORE_FOLDER,
-                Environment.getExternalStorageDirectory().getAbsolutePath() +
+                Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator +
                         mGlobalContext.getString(R.string.app_name));
 
         mScreenDirection = sharedPreferences.getInt(SP_KEY_SCREEN_DIRECTION, DIRECTION_PORT);

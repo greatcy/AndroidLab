@@ -5,8 +5,9 @@ package com.eli.test.bean;
  */
 
 public class VideoBean {
+    private String fileName;
     private String path;
-    private long size;
+    private String size;
     private String duration;
 
     public String getPath() {
@@ -17,11 +18,11 @@ public class VideoBean {
         this.path = path;
     }
 
-    public long getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -31,5 +32,13 @@ public class VideoBean {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

@@ -43,6 +43,7 @@ public class NewFloatService extends Service implements View.OnClickListener {
     private CameraPreview mPreview;
 
     private int mScreenWidth;
+    private int mScreenHeight;
 
     private MenuCtrler menuCtrler;
 
@@ -66,6 +67,7 @@ public class NewFloatService extends Service implements View.OnClickListener {
         DisplayMetrics outMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(outMetrics);
         mScreenWidth = outMetrics.widthPixels;
+        mScreenHeight = outMetrics.heightPixels;
 
         //设置type.系统提示型窗口，一般都在应用程序窗口之上.
         params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
@@ -76,15 +78,12 @@ public class NewFloatService extends Service implements View.OnClickListener {
 
         //设置窗口初始停靠位置.
         params.gravity = Gravity.LEFT | Gravity.TOP;
-        params.x = 0;
-        params.y = 0;
+        params.x = mScreenWidth / 2;
+        params.y = mScreenWidth / 2;
 
         //设置悬浮窗口长宽数据.
-        //注意，这里的width和height均使用px而非dp.这里我偷了个懒
-        //如果你想完全对应布局设置，需要先获取到机器的dpi
-        //px与dp的换算为px = dp * (dpi / 160).
-        params.width = Utils.dip2px(this, 300);
-        params.height = Utils.dip2px(this, 300);
+        params.width = Utils.dip2px(this, 42);
+        params.height = Utils.dip2px(this, 42);
 
         LayoutInflater inflater = LayoutInflater.from(getApplication());
         //获取浮动窗口视图所在布局.
@@ -107,16 +106,20 @@ public class NewFloatService extends Service implements View.OnClickListener {
         }
         Log.i(TAG, "状态栏高度为:" + statusBarHeight);
 
-        menuCtrler = new MenuCtrler(this, toucherLayout);
+        menuCtrler = new MenuCtrler(this, windowManager, toucherLayout, params);
 
         initRecorder();
 
         menuCtrler.getIvAddMenu().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+//                Log.d(TAG, "onTouch event.rawX:" + event.getRawX() +
+//                        " event.rawY:" + event.getRawY() + " left bound:" +
+//                        leftBound + " right bound:" + rightBound);
                 //这就是状态栏偏移量用的地方
                 params.x = (int) event.getRawX() - toucherLayout.getWidth() / 2;
-                params.y = (int) event.getRawY() - toucherLayout.getHeight() / 2 - statusBarHeight;
+                params.y = (int) event.getRawY() - toucherLayout.getHeight() - statusBarHeight;
+
                 windowManager.updateViewLayout(toucherLayout, params);
                 return false;
             }
@@ -153,6 +156,7 @@ public class NewFloatService extends Service implements View.OnClickListener {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "service onDestroy");
         windowManager.removeView(toucherLayout);
         getCameraInstance().release();
         super.onDestroy();
@@ -168,6 +172,7 @@ public class NewFloatService extends Service implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_exit:
+                Log.d(TAG, "onClick exit");
                 stopSelf();
                 break;
             case R.id.iv_home:

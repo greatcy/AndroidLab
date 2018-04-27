@@ -1,9 +1,10 @@
 package com.eli.test.camera;
 
+import android.content.Context;
 import android.hardware.Camera;
+import android.media.AudioManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.util.Log;
 
 import com.eli.test.Configuration;
@@ -30,6 +31,7 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
     public boolean startRecording() {
         if (prepareMediaRecorder()) {
             mMediaRecorder.start();
+            enableMute();
             return true;
         } else {
             releaseMediaRecorder();
@@ -37,9 +39,32 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
         return false;
     }
 
+
+    private int oldStreamVolume;
+
+    private void enableMute() {
+        AudioManager audioManager = (AudioManager) mPreview.getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager == null)
+            return;
+        oldStreamVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
+        audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
+        audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+    }
+
+    private void disableMute() {
+        AudioManager audioManager = (AudioManager) mPreview.getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager == null)
+            return;
+        audioManager.setStreamVolume(AudioManager.STREAM_RING, oldStreamVolume, 0);
+        audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, false);
+        audioManager.setStreamMute(AudioManager.STREAM_MUSIC, false);
+    }
+
     public void stopRecording() {
         if (mMediaRecorder != null) {
             mMediaRecorder.stop();
+            disableMute();
         }
         releaseMediaRecorder();
     }
