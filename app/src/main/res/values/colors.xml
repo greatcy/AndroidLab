@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="mask">#000000</color>
+    <color name="alpha_black">#ae000000</color>
+    <color name="alpha_white">#aeffffff</color>
 </resources>

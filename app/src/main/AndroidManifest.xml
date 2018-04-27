@@ -23,7 +23,7 @@
 
         </activity>
 
-        <activity android:name=".ShowPhotoActivity"></activity>
+        <activity android:name=".ShowPhotoActivity" />
 
         <activity android:name=".SimplestActivity">
 
@@ -39,6 +39,8 @@
 
         <service android:name=".floatwindow.FloatService" />
         <service android:name=".floatwindow.NewFloatService" />
+
+        <service android:name=".floatwindow.AnimFloatService" />
 
         <activity android:name=".TestAnimActivity">
 

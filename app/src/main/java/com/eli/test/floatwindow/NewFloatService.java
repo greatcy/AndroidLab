@@ -30,19 +30,19 @@ import com.eli.test.widget.MenuCtrler;
 
 public class NewFloatService extends Service implements View.OnClickListener {
     //Log用的TAG
-    private static final String TAG = "NewMainService";
+    protected static final String TAG = "NewMainService";
 
     //要引用的布局文件.
-    private FrameLayout toucherLayout;
+    protected FrameLayout toucherLayout;
     //布局参数.
-    private WindowManager.LayoutParams params;
+    protected WindowManager.LayoutParams params;
     //实例化的WindowManager.
-    private WindowManager windowManager;
+    protected WindowManager windowManager;
 
     private Camera mCamera;
     private CameraPreview mPreview;
 
-    private int mScreenWidth;
+    protected int mScreenWidth;
     private int mScreenHeight;
 
     private MenuCtrler menuCtrler;
@@ -60,7 +60,7 @@ public class NewFloatService extends Service implements View.OnClickListener {
         createToucher();
     }
 
-    private void createToucher() {
+    protected void createToucher() {
         //赋值WindowManager&LayoutParam.
         params = new WindowManager.LayoutParams();
         windowManager = (WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE);

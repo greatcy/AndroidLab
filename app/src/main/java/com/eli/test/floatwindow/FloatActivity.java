@@ -44,7 +44,7 @@ public class FloatActivity extends AppCompatActivity {
              */
             if (Build.VERSION.SDK_INT >= 23) {
                 if (Settings.canDrawOverlays(FloatActivity.this)) {
-                    Intent intent = new Intent(FloatActivity.this, NewFloatService.class);
+                    Intent intent = new Intent(FloatActivity.this, AnimFloatService.class);
                     Toast.makeText(FloatActivity.this, "已开启", Toast.LENGTH_SHORT).show();
                     startService(intent);
                     finish();
@@ -56,7 +56,7 @@ public class FloatActivity extends AppCompatActivity {
                 }
             } else {
                 //SDK在23以下，不用管.
-                Intent intent = new Intent(FloatActivity.this, NewFloatService.class);
+                Intent intent = new Intent(FloatActivity.this, AnimFloatService.class);
                 startService(intent);
                 finish();
             }
