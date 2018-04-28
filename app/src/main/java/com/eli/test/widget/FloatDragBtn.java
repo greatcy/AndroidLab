@@ -1,5 +1,7 @@
 package com.eli.test.widget;
 
+import android.animation.AnimatorInflater;
+import android.animation.StateListAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -39,26 +41,9 @@ class FloatDragBtn extends BaseFloatBtn {
     }
 
     protected void init() {
-        layoutParams = new WindowManager.LayoutParams();
-        windowManager = (WindowManager) getContext().getApplicationContext()
-                .getSystemService(Context.WINDOW_SERVICE);
-        //赋值WindowManager&LayoutParam.
-        layoutParams = new WindowManager.LayoutParams();
-        //设置type.系统提示型窗口，一般都在应用程序窗口之上.
-        layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        //设置效果为背景透明.
-        layoutParams.format = PixelFormat.RGBA_8888;
-        //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
-        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        super.init();
 
-        layoutParams.gravity = Gravity.START | Gravity.TOP;
-
-        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View view = inflater.inflate(R.layout.anim_float_view, null);
-        this.addView(view);
+        this.setBackgroundResource(R.drawable.black_bg_selector);
 
         //用于检测状态栏高度.
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
@@ -82,6 +67,8 @@ class FloatDragBtn extends BaseFloatBtn {
         switch (masked) {
             case MotionEvent.ACTION_DOWN:
                 Log.d(TAG, "ACTION_DOWN");
+                isDragging = false;
+                setPressed(true);
                 break;
             case MotionEvent.ACTION_MOVE:
                 final int historySize = event.getHistorySize();
@@ -93,23 +80,24 @@ class FloatDragBtn extends BaseFloatBtn {
                     float gapY = event.getY() - hisY;
                     Log.d(TAG, "ACTION_MOVE gapX:" + gapX + " gapY:" + gapY);
 
-                    if (!dragEnable && (gapX != 0 || gapY != 0)) {
+                    if (dragEnable && (gapX != 0 || gapY != 0)) {
                         layoutParams.x = (int) event.getRawX() - getWidth() / 2;
-                        layoutParams.y = (int) event.getRawY() - getHeight() / 2 - statusBarHeight;
+                        layoutParams.y = (int) event.getRawY() - getHeight() / 2
+                                - statusBarHeight;
                         windowManager.updateViewLayout(this, layoutParams);
                         isDragging = true;
-                    } else {
-                        isDragging = false;
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 Log.d(TAG, "ACTION_UP");
+                setPressed(false);
                 if (!isDragging) {
                     performClick();
                 }
-                if (dragEnable)
+                if (dragEnable) {
                     floatEdgeAnimation.startAnim(event.getRawX(), event.getRawY());
+                }
                 break;
         }
 
@@ -118,5 +106,24 @@ class FloatDragBtn extends BaseFloatBtn {
 
     public void setDragEnable(boolean dragEnable) {
         this.dragEnable = dragEnable;
+    }
+
+    public boolean isInLefeEdge() {
+        return floatEdgeAnimation.left;
+    }
+
+    public int getScreenWidth() {
+        return floatEdgeAnimation.mScreenWidth;
+    }
+
+    @Override
+    public void addFloatView(int x, int y) {
+        if (y < floatEdgeAnimation.minLine) {
+            y = floatEdgeAnimation.minLine;
+        } else if (y > floatEdgeAnimation.maxLine) {
+            y = floatEdgeAnimation.maxLine;
+        }
+
+        super.addFloatView(x, y);
     }
 }

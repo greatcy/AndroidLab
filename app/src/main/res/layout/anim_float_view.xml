@@ -8,8 +8,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:background="@drawable/black_bg_selector"
         android:padding="5dp"
+        android:alpha="0.6"
+        android:background="@drawable/black_round_bg"
         android:src="@drawable/ic_circle" />
 
 

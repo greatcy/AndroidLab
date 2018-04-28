@@ -10,6 +10,7 @@ import android.view.animation.AccelerateInterpolator;
 
 /**
  * Created by chenjunheng on 2018/4/28.
+ * TODO the params is redundant
  */
 abstract class BaseFloatAnim {
     protected View mTarget;

@@ -39,25 +39,42 @@ public class TestFloatAnimActivity extends AppCompatActivity {
                     isMenuOpen = true;
                     btn.setDragEnable(false);
                     FloatItemBtn fib = new FloatItemBtn(TestFloatAnimActivity.this);
+
                     items[0] = fib;
                     fib.setIcon(R.drawable.home);
-                    fib.setXY(RADIUS * Math.sin(Math.PI / 4),
+                    fib.setAnimXY(btn.isInLefeEdge() ? RADIUS * Math.sin(Math.PI / 4) :
+                                    btn.getScreenWidth() - RADIUS * Math.sin(Math.PI / 4)-
+                                            btn.getWidth(),
                             params.y - RADIUS * Math.cos(Math.PI / 4));
                     fib.addFloatView(params.x, params.y);
 
                     fib = new FloatItemBtn(TestFloatAnimActivity.this);
                     items[1] = fib;
                     fib.setIcon(R.drawable.play);
-                    fib.setXY(RADIUS * Math.sin(Math.PI / 2),
+                    fib.setAnimXY(btn.isInLefeEdge() ? RADIUS * Math.sin(Math.PI / 2) :
+                                    btn.getScreenWidth() - RADIUS * Math.sin(Math.PI / 2)-
+                                            btn.getWidth(),
                             params.y - RADIUS * Math.cos(Math.PI / 2));
                     fib.addFloatView(params.x, params.y);
 
                     fib = new FloatItemBtn(TestFloatAnimActivity.this);
+
                     items[2] = fib;
                     fib.setIcon(R.drawable.exit);
-                    fib.setXY(RADIUS * Math.sin(Math.PI * 3 / 4),
+                    fib.setAnimXY(btn.isInLefeEdge() ? RADIUS * Math.sin(Math.PI * 3 / 4) :
+                                    btn.getScreenWidth() - RADIUS * Math.sin(Math.PI * 3 / 4)-
+                                            btn.getWidth(),
                             params.y - RADIUS * Math.cos(Math.PI * 3 / 4));
                     fib.addFloatView(params.x, params.y);
+
+                    for (FloatItemBtn item : items) {
+                        item.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d(FloatDragBtn.TAG, "item click!");
+                            }
+                        });
+                    }
                 } else {
                     for (FloatItemBtn item : items) {
                         item.removeFloatView();

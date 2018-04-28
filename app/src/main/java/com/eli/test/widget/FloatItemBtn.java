@@ -30,7 +30,7 @@ class FloatItemBtn extends BaseFloatBtn {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setXY(double animTargetX, double animTargetY) {
+    public void setAnimXY(double animTargetX, double animTargetY) {
         this.showTargetX = (float) animTargetX;
         this.showTargetY = (float) animTargetY;
     }
@@ -40,6 +40,8 @@ class FloatItemBtn extends BaseFloatBtn {
         super.addFloatView(x, y);
         hideX = x;
         hideY = y;
+
+        this.setBackgroundResource(R.drawable.black_bg_selector);
 
         FloatItemAnim itemAnim = new FloatItemAnim(this, layoutParams, windowManager);
         itemAnim.setTargetXY(showTargetX, showTargetY);
@@ -56,7 +58,6 @@ class FloatItemBtn extends BaseFloatBtn {
     public void removeFloatView() {
         FloatItemAnim itemAnim = new FloatItemAnim(this, layoutParams, windowManager);
         itemAnim.setTargetXY(hideX, hideY);
-        itemAnim.startAnim(hideX, hideY);
         itemAnim.setAnimationListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -64,6 +65,6 @@ class FloatItemBtn extends BaseFloatBtn {
                 FloatItemBtn.super.removeFloatView();
             }
         });
-        itemAnim.startAnim(layoutParams.x, layoutParams.y);
+        itemAnim.startAnim(showTargetX, showTargetY);
     }
 }

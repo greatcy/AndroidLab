@@ -14,8 +14,10 @@ import com.eli.test.Utils;
  */
 class FloatEdgeAnim extends BaseFloatAnim {
     private Point middlePoint = new Point();
-    private int HEIGHT_LIMIT = 150;
-    private int mScreenWidth, maxLine, minLine;
+    static int HEIGHT_LIMIT = 150;
+    int mScreenWidth;
+    int maxLine, minLine;
+    boolean left = true;
 
     FloatEdgeAnim(View mTarget, WindowManager.LayoutParams params,
                   WindowManager windowManager, int statusBarHeight) {
@@ -51,8 +53,10 @@ class FloatEdgeAnim extends BaseFloatAnim {
     @Override
     float getTargetX(float curX) {
         if (curX < middlePoint.x) {
+            left = true;
             return 0;
         } else {
+            left = false;
             return mScreenWidth - mTarget.getWidth();
         }
     }

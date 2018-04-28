@@ -39,15 +39,15 @@
         <service android:name=".floatwindow.AnimFloatService" />
 
         <activity android:name=".TestAnimActivity">
-
-        </activity>
-
-        <activity android:name=".widget.TestFloatAnimActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".widget.TestFloatAnimActivity">
+
         </activity>
 
         <activity
