@@ -29,11 +29,7 @@
         </activity>
 
         <activity android:name=".floatwindow.FloatActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".floatwindow.FloatService" />
@@ -43,6 +39,14 @@
 
         <activity android:name=".TestAnimActivity">
 
+        </activity>
+
+        <activity android:name=".SettingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".widget.TestFloatAnimActivity">
