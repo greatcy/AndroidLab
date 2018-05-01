@@ -18,6 +18,7 @@ public class Configuration {
     //TODO add features
     private String mStoreFolder;
     private int mScreenDirection;
+    private boolean mIsForceMode;
 
     private int DIRECTION_PORT = 0;
     private int DIRECTION_LANDSCAPE = 1;
@@ -25,6 +26,7 @@ public class Configuration {
     private final String SP_NAME = "settingSP";
     private final String SP_KEY_SCREEN_DIRECTION = "sp_key_screen_direction";
     private final String SP_KEY_STORE_FOLDER = "storage_path";
+    private final String SP_KEY_FORCE_MODE = "sp_key_force_mode";
 
 
     private Configuration(Context context) {
@@ -50,6 +52,8 @@ public class Configuration {
                         mGlobalContext.getString(R.string.app_name));
 
         mScreenDirection = sharedPreferences.getInt(SP_KEY_SCREEN_DIRECTION, DIRECTION_PORT);
+
+        mIsForceMode = sharedPreferences.getBoolean(SP_KEY_FORCE_MODE, false);
     }
 
     public String getStoreFolder() {
@@ -58,5 +62,13 @@ public class Configuration {
 
     public void setStoreFolder(String mStoreFolder) {
         this.mStoreFolder = mStoreFolder;
+    }
+
+    public boolean isIsForceMode() {
+        return mIsForceMode;
+    }
+
+    public void setIsForceMode(boolean mIsForceMode) {
+        this.mIsForceMode = mIsForceMode;
     }
 }

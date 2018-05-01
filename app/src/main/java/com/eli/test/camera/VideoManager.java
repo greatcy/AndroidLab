@@ -47,7 +47,9 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
     private int oldStreamVolume;
 
     private void enableMute() {
-        AudioManager audioManager = (AudioManager) mPreview.getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager)
+                mPreview.getContext().getApplicationContext().
+                        getSystemService(Context.AUDIO_SERVICE);
         if (audioManager == null)
             return;
         oldStreamVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
@@ -57,7 +59,9 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
     }
 
     private void disableMute() {
-        AudioManager audioManager = (AudioManager) mPreview.getContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager)
+                mPreview.getContext().getApplicationContext().
+                        getSystemService(Context.AUDIO_SERVICE);
         if (audioManager == null)
             return;
         audioManager.setStreamVolume(AudioManager.STREAM_RING, oldStreamVolume, 0);
