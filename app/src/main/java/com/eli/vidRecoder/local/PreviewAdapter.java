@@ -55,6 +55,7 @@ public class PreviewAdapter extends BaseAdapter {
                     }, null);
                     break;
                 case R.id.tv_open:
+                    open(bean);
                     break;
             }
             mOperatorMenu.dismiss();
@@ -92,10 +93,12 @@ public class PreviewAdapter extends BaseAdapter {
             view = LayoutInflater.from(this.mContext).
                     inflate(R.layout.video_item_layout, viewGroup, false);
             holder = new Holder();
+            holder.mask=view.findViewById(R.id.mask);
             holder.ivPoster = view.findViewById(R.id.iv_poster);
             holder.tvDuration = view.findViewById(R.id.tv_duration);
             holder.tvFileName = view.findViewById(R.id.tv_title);
             holder.tvSize = view.findViewById(R.id.tv_size);
+            holder.ivPlayBtn=view.findViewById(R.id.iv_play);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
@@ -107,14 +110,14 @@ public class PreviewAdapter extends BaseAdapter {
                 holder.ivPoster.setImageBitmap(bitmap);
             }
 
-            holder.ivPoster.setOnClickListener(new View.OnClickListener() {
+            holder.ivPlayBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     open(videoBean);
                 }
             });
 
-            holder.ivPoster.setOnLongClickListener(new View.OnLongClickListener() {
+            holder.mask.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     // 用于PopupWindow的View
@@ -152,14 +155,16 @@ public class PreviewAdapter extends BaseAdapter {
         if (videoBean != null) {
             Uri uri = Uri.parse("file://" + videoBean.getPath());
             Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
             intent.setDataAndType(uri, "video/mp4");
             mContext.startActivity(intent);
         }
     }
 
     private class Holder {
-        ImageView ivPoster;
+        ImageView ivPoster,ivPlayBtn;
         TextView tvFileName, tvSize, tvDuration;
+        View mask;
     }
 
 

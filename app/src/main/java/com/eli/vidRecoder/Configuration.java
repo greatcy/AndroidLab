@@ -56,7 +56,7 @@ public class Configuration {
 
         mScreenDirection = sharedPreferences.getInt(SP_KEY_SCREEN_DIRECTION, DIRECTION_PORT);
 
-        mIsForceMode = sharedPreferences.getBoolean(SP_KEY_FORCE_MODE, false);
+        mIsForceMode = sharedPreferences.getBoolean(SP_KEY_FORCE_MODE, true);
 
         mUserQuickMode = sharedPreferences.getBoolean(SP_KEY_QUICK_MODE, false);
     }

@@ -17,7 +17,7 @@ class FloatEdgeAnim extends BaseFloatAnim {
     static int HEIGHT_LIMIT = 150;
     int mScreenWidth;
     int maxLine, minLine;
-    boolean left = true;
+    boolean left = false;
 
     FloatEdgeAnim(View mTarget, WindowManager.LayoutParams params,
                   WindowManager windowManager, int statusBarHeight) {
