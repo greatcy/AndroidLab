@@ -8,4 +8,8 @@
     <color name="alpha_black">#ae000000</color>
     <color name="alpha_white">#aeffffff</color>
     <color name="colorText">#B0B0B0</color>
+
+    <color name="alpha_blue">#ae1296df</color>
+    <color name="blue">#3F51B5</color>
+
 </resources>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">影摄</string>
+    <string name="app_eng_name">vidRecorder</string>
 
     <string name="action_setting">设置</string>
     <string name="action_about">关于</string>
@@ -21,4 +22,15 @@
     <string name="quick_start">快速启动</string>
     <string name="start">已开启</string>
     <string name="need_float_tips">需要取得权限以使用悬浮窗</string>
+
+    <string name="about_format">%s V%s</string>
+    <string name="about_description"><![CDATA[This is a test dialog.\n    —free soft alliance.]]></string>
+
+    <string name="action_delete">删除</string>
+    <string name="action_open">打开</string>
+
+    <string name="dlg_delete_title">删除</string>
+    <string name="dlg_delete_content">确认删除视频?</string>
+    <string name="dlg_confirm">确认</string>
+    <string name="dlg_cancel">取消</string>
 </resources>

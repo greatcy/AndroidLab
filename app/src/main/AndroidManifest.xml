@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.eli.test">
+    package="com.eli.vidRecoder">
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -12,7 +12,11 @@
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- 添加快捷方式 -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+
     <application
+        android:name=".VidApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,7 +29,15 @@
 
         </activity>
 
-        <activity android:name=".FloatActivity">
+        <activity android:name=".FloatActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="com.eli.vidRecoder.FloatActivity" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,9 +46,11 @@
         </activity>
 
         <activity android:name=".SettingActivity">
-
         </activity>
 
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/DialogActivity" />
     </application>
 
 </manifest>
