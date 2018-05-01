@@ -1,10 +1,9 @@
-package com.eli.vidRecoder;
+package com.eli.vidRecoder.local;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.eli.fileselector.OpenFileDialog;
+import com.eli.vidRecoder.Configuration;
+import com.eli.vidRecoder.R;
 
 import java.io.File;
 
@@ -23,7 +24,7 @@ import java.io.File;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     final static String TAG = SettingActivity.class.getSimpleName();
-
+    private TextView folderTextView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +36,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //init set location path
-        ViewGroup vg = (ViewGroup) findViewById(R.id.setting_location_path);
+        ViewGroup vg = findViewById(R.id.setting_location_path);
         TextView tvTitle = (TextView) vg.findViewById(R.id.tv_title);
-        TextView tvSubtitle = (TextView) vg.findViewById(R.id.tv_subtitle);
+        TextView tvSubtitle =  vg.findViewById(R.id.tv_subtitle);
         tvTitle.setText(getString(R.string.setting_location_title));
-        tvSubtitle.setText(getString(R.string.setting_location));
+        folderTextView=tvSubtitle;
+        tvSubtitle.setText(Configuration.getInstance(this).getStoreFolder());
         vg.setOnClickListener(this);
 
         //init force process
@@ -73,12 +75,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             Log.d(TAG, "select file path:" + f.getAbsolutePath());
                             Configuration.getInstance
                                     (SettingActivity.this).setStoreFolder(f.getAbsolutePath());
+                            folderTextView.setText(Configuration.getInstance(SettingActivity.this).getStoreFolder());
                         }
                     }
                 });
                 dialog.show();
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

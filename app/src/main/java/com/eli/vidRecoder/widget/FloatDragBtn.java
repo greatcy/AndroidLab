@@ -124,6 +124,8 @@ class FloatDragBtn extends BaseFloatBtn {
             y = floatEdgeAnimation.maxLine;
         }
 
+        x = getScreenWidth();
+
         super.addFloatView(x, y);
     }
 }

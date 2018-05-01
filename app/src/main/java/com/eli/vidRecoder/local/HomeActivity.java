@@ -1,9 +1,7 @@
 package com.eli.vidRecoder.local;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Process;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,20 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.ImageView;
 
-import com.eli.vidRecoder.AboutActivity;
-import com.eli.vidRecoder.Configuration;
 import com.eli.vidRecoder.FloatActivity;
 import com.eli.vidRecoder.R;
-import com.eli.vidRecoder.SettingActivity;
-import com.eli.vidRecoder.Utils;
 import com.eli.vidRecoder.VidApplication;
 import com.eli.vidRecoder.bean.VideoBean;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 return true;
             case R.id.action_exit:
-                Process.killProcess(Process.myPid());
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

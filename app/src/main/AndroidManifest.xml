@@ -45,11 +45,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SettingActivity">
+        <activity android:name=".local.SettingActivity">
         </activity>
 
         <activity
-            android:name=".AboutActivity"
+            android:name=".local.AboutActivity"
             android:theme="@style/DialogActivity" />
     </application>
 

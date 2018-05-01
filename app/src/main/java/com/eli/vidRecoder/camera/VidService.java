@@ -1,19 +1,27 @@
 package com.eli.vidRecoder.camera;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Process;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Toast;
 
+import com.eli.vidRecoder.Configuration;
 import com.eli.vidRecoder.local.HomeActivity;
 import com.eli.vidRecoder.R;
 import com.eli.vidRecoder.ThreadManager;
 import com.eli.vidRecoder.widget.FloatMenuManager;
+
+import java.util.Random;
 
 
 /**
@@ -33,6 +41,23 @@ public class VidService extends Service {
         super.onCreate();
         initView();
         initRecorder();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (Configuration.getInstance(this).isIsForceMode()){
+            NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+            mBuilder.setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.app_name) + getString(R.string.start))
+                    .setSmallIcon(R.mipmap.ic_launcher);
+            Notification notification = mBuilder.build();
+            if (mNotifyManager != null) {
+                mNotifyManager.notify(1000, notification);
+            }
+            startForeground(1000, notification);
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private void initView() {
@@ -133,5 +158,8 @@ public class VidService extends Service {
         super.onDestroy();
         getCameraInstance().release();
         manager.removeFloatView();
+        if (Configuration.getInstance(this).isIsForceMode()) {
+            stopForeground(true);
+        }
     }
 }

@@ -46,13 +46,7 @@ public class FloatActivity extends AppCompatActivity {
              */
             if (Build.VERSION.SDK_INT >= 23) {
                 if (Settings.canDrawOverlays(FloatActivity.this)) {
-                    Intent intent = new Intent(FloatActivity.this, VidService.class);
-                    Toast.makeText(FloatActivity.this,
-                            getString(R.string.app_name) +
-                                    getString(R.string.start), Toast.LENGTH_SHORT).show();
-                    startService(intent);
-//                    finish();
-                    moveTaskToBack(true);
+                    startService();
                 } else {
                     //若没有权限，提示获取.
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
@@ -62,13 +56,21 @@ public class FloatActivity extends AppCompatActivity {
                 }
             } else {
                 //SDK在23以下，不用管.
-                Intent intent = new Intent(FloatActivity.this, VidService.class);
-                startService(intent);
-//                finish();
-                moveTaskToBack(true);
+                startService();
             }
         }
     };
+
+    private void startService() {
+        Intent intent = new Intent(FloatActivity.this, VidService.class);
+        Toast.makeText(FloatActivity.this,
+                getString(R.string.app_name) +
+                        getString(R.string.start),
+                Toast.LENGTH_SHORT).show();
+        startService(intent);
+//                    finish();
+        moveTaskToBack(true);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class FloatActivity extends AppCompatActivity {
         setContentView(R.layout.float_activity);
 
         //TODO don't do this
-        ((VidApplication)getApplication()).setFloatActive(true);
+        ((VidApplication) getApplication()).setFloatActive(true);
     }
 
     @Override
@@ -128,6 +130,6 @@ public class FloatActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((VidApplication)getApplication()).setFloatActive(false);
+        ((VidApplication) getApplication()).setFloatActive(false);
     }
 }
