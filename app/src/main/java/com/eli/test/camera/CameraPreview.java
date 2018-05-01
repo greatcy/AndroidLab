@@ -17,6 +17,7 @@ public class CameraPreview extends TextureView implements
     public CameraPreview(Context context , Camera camera) {
         super(context);
         mCamera = camera;
+        setSurfaceTextureListener(this);
     }
 
 

@@ -26,7 +26,7 @@ class FloatDragBtn extends BaseFloatBtn {
     private int statusBarHeight;
     private boolean isDragging;
     private FloatEdgeAnim floatEdgeAnimation;
-    private boolean dragEnable;
+    private boolean dragEnable = true;
 
     public FloatDragBtn(Context context) {
         super(context);
@@ -52,7 +52,7 @@ class FloatDragBtn extends BaseFloatBtn {
         }
 
         floatEdgeAnimation = new FloatEdgeAnim(this, layoutParams, windowManager, statusBarHeight);
-        floatEdgeAnimation.showDebugLine();
+//        floatEdgeAnimation.showDebugLine();
     }
 
     @Override

@@ -8,4 +8,11 @@
     <string name="size_gb">%.2f Gb</string>
     <string name="size_mb">%.2f Mb</string>
     <string name="size_kb">%.2f Kb</string>
+
+    <string name="playing_tips">记录中...</string>
+    <string name="stop_tips">完成</string>
+
+    <string name="quick_start">快速启动</string>
+    <string name="start">已开启</string>
+    <string name="need_float_tips">需要取得权限以使用悬浮窗</string>
 </resources>

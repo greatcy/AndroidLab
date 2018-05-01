@@ -1,7 +1,8 @@
-package com.eli.test;
+package com.eli.test.local;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.eli.test.R;
 import com.eli.test.bean.VideoBean;
 
 import java.util.List;
@@ -63,8 +65,10 @@ public class PreviewAdapter extends BaseAdapter {
         }
 
         if (holder != null) {
-            holder.ivPoster.setImageBitmap
-                    (VidImageLoader.getInstance().getBitmap(videoBean.getPath()));
+            Bitmap bitmap = VidImageLoader.getInstance().getBitmap(videoBean.getPath());
+            if (bitmap != null) {
+                holder.ivPoster.setImageBitmap(bitmap);
+            }
 
             holder.ivPoster.setOnClickListener(new View.OnClickListener() {
                 @Override

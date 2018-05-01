@@ -1,10 +1,12 @@
-package com.eli.test.floatwindow;
+package com.eli.test;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.eli.test.R;
+import com.eli.test.camera.VidService;
 
 /**
  * Created by chenjunheng on 2018/4/19.
@@ -44,21 +46,26 @@ public class FloatActivity extends AppCompatActivity {
              */
             if (Build.VERSION.SDK_INT >= 23) {
                 if (Settings.canDrawOverlays(FloatActivity.this)) {
-                    Intent intent = new Intent(FloatActivity.this, AnimFloatService.class);
-                    Toast.makeText(FloatActivity.this, "已开启", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(FloatActivity.this, VidService.class);
+                    Toast.makeText(FloatActivity.this,
+                            getString(R.string.app_name) +
+                                    getString(R.string.start), Toast.LENGTH_SHORT).show();
                     startService(intent);
 //                    finish();
+                    moveTaskToBack(false);
                 } else {
                     //若没有权限，提示获取.
                     Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    Toast.makeText(FloatActivity.this, "需要取得权限以使用悬浮窗", Toast.LENGTH_SHORT).show();
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    Toast.makeText(FloatActivity.this, R.string.need_float_tips, Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                 }
             } else {
                 //SDK在23以下，不用管.
-                Intent intent = new Intent(FloatActivity.this, AnimFloatService.class);
+                Intent intent = new Intent(FloatActivity.this, VidService.class);
                 startService(intent);
 //                finish();
+                moveTaskToBack(false);
             }
         }
     };

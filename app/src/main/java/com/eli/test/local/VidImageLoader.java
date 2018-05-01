@@ -1,9 +1,6 @@
-package com.eli.test;
+package com.eli.test.local;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
@@ -53,12 +50,7 @@ public class VidImageLoader {
 
     //获取数据
     public Bitmap getBitmap(String url) {
-        Bitmap bitmap = mImageCache.get(url);
-        if (bitmap == null) {
-            bitmap = getDiskBitmap(url);
-            putBitmap(url, bitmap);
-        }
-        return bitmap;
+        return mImageCache.get(url);
     }
 
     //存储数据

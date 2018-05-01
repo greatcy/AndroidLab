@@ -30,8 +30,12 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
 
     public boolean startRecording() {
         if (prepareMediaRecorder()) {
-            mMediaRecorder.start();
-            enableMute();
+            try {
+                mMediaRecorder.start();
+                enableMute();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             return true;
         } else {
             releaseMediaRecorder();
@@ -63,7 +67,11 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
 
     public void stopRecording() {
         if (mMediaRecorder != null) {
-            mMediaRecorder.stop();
+            try {
+                mMediaRecorder.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             disableMute();
         }
         releaseMediaRecorder();
@@ -90,6 +98,7 @@ public class VideoManager implements MediaRecorder.OnErrorListener {
             } catch (IOException e) {
                 releaseMediaRecorder();
                 e.printStackTrace();
+                return false;
             }
         }
         return true;

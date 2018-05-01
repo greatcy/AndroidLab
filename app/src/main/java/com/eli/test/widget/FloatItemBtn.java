@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.eli.test.R;
@@ -16,7 +17,7 @@ import com.eli.test.R;
 class FloatItemBtn extends BaseFloatBtn {
     private float showTargetX, showTargetY;
     private float hideX, hideY;
-
+    private boolean hasAdded;
 
     public FloatItemBtn(Context context) {
         super(context);
@@ -37,7 +38,15 @@ class FloatItemBtn extends BaseFloatBtn {
 
     @Override
     public void addFloatView(int x, int y) {
-        super.addFloatView(x, y);
+        if (!hasAdded) {
+            super.addFloatView(x, y);
+            hasAdded = true;
+        } else {
+            layoutParams.x=x;
+            layoutParams.y=y;
+            windowManager.updateViewLayout(this,layoutParams);
+            this.setVisibility(View.VISIBLE);
+        }
         hideX = x;
         hideY = y;
 
@@ -62,7 +71,7 @@ class FloatItemBtn extends BaseFloatBtn {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                FloatItemBtn.super.removeFloatView();
+                FloatItemBtn.this.setVisibility(View.INVISIBLE);
             }
         });
         itemAnim.startAnim(showTargetX, showTargetY);
