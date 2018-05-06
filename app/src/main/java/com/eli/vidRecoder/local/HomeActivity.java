@@ -1,10 +1,14 @@
 package com.eli.vidRecoder.local;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,8 +18,10 @@ import android.widget.GridView;
 
 import com.eli.vidRecoder.FloatActivity;
 import com.eli.vidRecoder.R;
+import com.eli.vidRecoder.ThreadManager;
 import com.eli.vidRecoder.VidApplication;
 import com.eli.vidRecoder.bean.VideoBean;
+import com.eli.vidRecoder.widget.dialog.DialogUtils;
 
 import java.util.List;
 
@@ -31,6 +37,72 @@ public class HomeActivity extends AppCompatActivity {
     private View mEmpty;
     private SwipeRefreshLayout mSwipeRefresh;
     private boolean mIsRefreshing;
+
+    private ActionMode.Callback callback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.action_menu, menu);
+            mPlayBtn.setVisibility(View.GONE);
+            mAdapter.setEditMode(true);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+
+            //show confirm dialog
+            DialogUtils.showConfirmDeleteDLG(HomeActivity.this,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //show delete loading dialog
+                            final Dialog loadingDialog =
+                                    DialogUtils.createLoadingDialog(HomeActivity.this,
+                                            getString(R.string.deleting));
+                            ThreadManager.getInstance().runInNewThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (mAdapter != null) {
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        mAdapter.removeSelectedBeans();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadingDialog.dismiss();
+                                                mAdapter.notifyDataSetChanged();
+                                                mode.finish();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }, null);
+
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mPlayBtn.setVisibility(View.VISIBLE);
+            mAdapter.setEditMode(false);
+            mAdapter.notifyDataSetChanged();
+        }
+    };
+
+    public void enterActionMode() {
+        startSupportActionMode(callback);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +157,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void scanVidFolder() {
         mIsRefreshing = true;

@@ -25,7 +25,9 @@
 
         <service android:name=".camera.VidService" />
 
-        <activity android:name=".local.HomeActivity">
+        <activity android:name=".local.HomeActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/HomeStyle">
 
         </activity>
 
@@ -38,11 +40,11 @@
 
         <activity android:name=".SplashActivity"
             android:theme="@style/Theme.Design.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity android:name=".local.SettingActivity">
@@ -51,6 +53,14 @@
         <activity
             android:name=".local.AboutActivity"
             android:theme="@style/DialogActivity" />
+
+        <activity android:name=".TestLoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

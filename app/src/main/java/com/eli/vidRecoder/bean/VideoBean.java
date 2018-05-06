@@ -9,6 +9,15 @@ public class VideoBean {
     private String path;
     private String size;
     private String duration;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getPath() {
         return path;

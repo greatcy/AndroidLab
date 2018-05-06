@@ -18,7 +18,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:textSize="24sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="#000"
             android:text="@string/action_about" />
 
         <View

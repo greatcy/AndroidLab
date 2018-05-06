@@ -16,7 +16,7 @@
     <string name="setting_location">选择视频文件存放目录</string>
     <string name="setting_keep_process_mode">防止系统强制结束进程,但会出现通知栏</string>
 
-    <string name="playing_tips">记录中...</string>
+    <string name="playing_tips">记录中…</string>
     <string name="stop_tips">完成</string>
 
     <string name="quick_start">快速启动</string>
@@ -24,7 +24,7 @@
     <string name="need_float_tips">需要取得权限以使用悬浮窗</string>
 
     <string name="about_format">%s V%s</string>
-    <string name="about_description"><![CDATA[This is a test dialog.\n    —free soft alliance.]]></string>
+    <string name="about_description"><![CDATA[献给用于正途的大家.\n    —eli.]]></string>
 
     <string name="action_delete">删除</string>
     <string name="action_open">打开</string>
@@ -33,4 +33,5 @@
     <string name="dlg_delete_content">确认删除视频?</string>
     <string name="dlg_confirm">确认</string>
     <string name="dlg_cancel">取消</string>
+    <string name="deleting">删除中…</string>
 </resources>

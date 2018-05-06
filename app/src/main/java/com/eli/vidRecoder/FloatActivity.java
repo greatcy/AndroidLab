@@ -68,8 +68,12 @@ public class FloatActivity extends AppCompatActivity {
                         getString(R.string.start),
                 Toast.LENGTH_SHORT).show();
         startService(intent);
-//                    finish();
-        moveTaskToBack(true);
+        if (Configuration.getInstance(this).isIsForceMode()) {
+            finish();
+        }
+        else {
+            moveTaskToBack(true);
+        }
     }
 
     @Override

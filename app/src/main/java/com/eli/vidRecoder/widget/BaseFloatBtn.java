@@ -71,4 +71,8 @@ class BaseFloatBtn extends FrameLayout {
     public void removeFloatView() {
         windowManager.removeView(this);
     }
+
+    public void forceRemove(){
+        windowManager.removeView(this);
+    }
 }

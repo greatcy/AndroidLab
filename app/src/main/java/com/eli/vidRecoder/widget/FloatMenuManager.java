@@ -131,15 +131,15 @@ public class FloatMenuManager {
 
     public void removeFloatView() {
         if (homeBtn != null)
-            homeBtn.removeFloatView();
+            homeBtn.forceRemove();
         if (exitBtn != null)
-            exitBtn.removeFloatView();
+            exitBtn.forceRemove();
         if (playBtn != null)
-            playBtn.removeFloatView();
+            playBtn.forceRemove();
         if (previewFloatView != null)
             previewFloatView.removeFloatView();
         if (menuBtn != null) {
-            menuBtn.removeFloatView();
+            menuBtn.forceRemove();
         }
     }
 

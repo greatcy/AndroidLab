@@ -10,6 +10,8 @@
     <color name="colorText">#B0B0B0</color>
 
     <color name="alpha_blue">#ae1296df</color>
-    <color name="blue">#3F51B5</color>
+    <color name="blue">#1296db</color>
+
+    <color name="orange">#FF4500</color>
 
 </resources>

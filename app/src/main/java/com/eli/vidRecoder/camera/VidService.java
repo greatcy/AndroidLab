@@ -75,9 +75,9 @@ public class VidService extends Service {
         manager.setExitClick(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                manager.removeFloatView();
+                stopSelf();
                 Process.killProcess(Process.myPid());
-//                manager.removeFloatView();
-//                stopSelf();
             }
         });
 
