@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">影攝</string>
+    <string name="app_eng_name">vidRecorder</string>
+
+    <string name="action_setting">設置</string>
+    <string name="action_about">關於</string>
+    <string name="action_exit">退出</string>
+
+    <string name="size_gb">%.2f Gb</string>
+    <string name="size_mb">%.2f Mb</string>
+    <string name="size_kb">%.2f Kb</string>
+
+    <string name="setting_location_title">視頻文件目錄</string>
+    <string name="setting_keep_process_mode_title">開啓保留活動模式</string>
+
+    <string name="setting_location">選擇視頻文件存放目錄</string>
+    <string name="setting_keep_process_mode">防止系統強制結束進程,但會出現通知欄</string>
+
+    <string name="playing_tips">記錄中…</string>
+    <string name="stop_tips">完成</string>
+
+    <string name="quick_start">快速啓動</string>
+    <string name="start">已開啓</string>
+    <string name="need_float_tips">請允許懸浮窗權限以正常使用</string>
+
+    <string name="about_format">%s V%s</string>
+    <string name="about_description"><![CDATA[請大家在遵守法律法規的前提下使用影攝.\n    —eli.]]></string>
+
+    <string name="action_delete">刪除</string>
+    <string name="action_open">打開</string>
+
+    <string name="dlg_delete_title">刪除</string>
+    <string name="dlg_delete_content">確認刪除視頻?</string>
+    <string name="dlg_confirm">確認</string>
+    <string name="dlg_cancel">取消</string>
+    <string name="deleting">刪除中…</string>
+</resources>
