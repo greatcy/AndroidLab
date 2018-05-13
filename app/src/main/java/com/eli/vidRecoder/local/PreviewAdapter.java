@@ -134,11 +134,11 @@ public class PreviewAdapter extends BaseAdapter {
                 holder.checkBox.setChecked(videoBean.isSelected());
                 holder.checkBox.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        videoBean.setSelected(isChecked);
-                    }
-                });
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                videoBean.setSelected(isChecked);
+                            }
+                        });
             } else {
                 holder.ivPlayBtn.setEnabled(true);
                 holder.mask.setEnabled(true);
@@ -156,6 +156,8 @@ public class PreviewAdapter extends BaseAdapter {
                     @Override
                     public boolean onLongClick(View v) {
                         showMenu(v, videoBean);
+                        holder.mask.setPressed(false);
+                        holder.ivPlayBtn.setPressed(false);
                         return false;
                     }
                 };

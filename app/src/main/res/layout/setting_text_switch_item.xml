@@ -9,9 +9,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/sw"
         android:layout_marginLeft="@dimen/item_margin_horizontal_edge"
         android:layout_marginStart="@dimen/item_margin_horizontal_edge"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_toStartOf="@id/sw">
 
         <TextView
             android:id="@+id/tv_title"
